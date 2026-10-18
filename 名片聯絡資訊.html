@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>名片聯絡資訊</title>
+  <style>
+    :root{--navy:#1f4e78;--ink:#172033;--muted:#64748b;--line:#dbe5ef;--soft:#f5f8fb;--accent:#2f80b7}
+    *{box-sizing:border-box} body{margin:0;background:#eef3f8;color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif}
+    .wrap{max-width:1500px;margin:0 auto;padding:28px 22px 50px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:20px}
+    h1{margin:0;font-size:30px;letter-spacing:.03em}.sub{margin:8px 0 0;color:var(--muted);font-size:14px}.count{color:var(--navy);font-weight:700;font-size:17px;white-space:nowrap}
+    .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}.toolbar input,.toolbar select{border:1px solid #c7d5e4;border-radius:10px;background:#fff;padding:11px 13px;font-size:15px;color:var(--ink)}.toolbar input{flex:1;min-width:250px}
+    .table-box{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:auto;box-shadow:0 8px 26px rgba(31,78,120,.08)}table{border-collapse:collapse;width:100%;min-width:1250px}
+    thead{background:var(--navy);color:#fff}th,td{padding:13px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);font-size:14px;line-height:1.55}th{font-weight:700;white-space:nowrap}tbody tr:nth-child(even){background:#f4f8fb}tbody tr:hover{background:#e9f3fa}
+    .name{font-weight:700;color:#123b5a;white-space:nowrap}.tag{display:inline-block;padding:3px 8px;border-radius:999px;background:#e5f1f8;color:#1d5f87;font-size:12px;white-space:nowrap}.muted{color:var(--muted)}a{color:#146aa2;text-decoration:none}a:hover{text-decoration:underline}.empty{padding:38px;text-align:center;color:var(--muted);display:none}
+    .note{margin-top:14px;color:var(--muted);font-size:13px}.print{border:1px solid #b7c9d9;border-radius:9px;background:#fff;padding:9px 12px;color:var(--navy);cursor:pointer;font-size:14px}.print:hover{background:#edf5fa}
+    @media(max-width:700px){.wrap{padding:20px 12px}.hero{display:block}.count{display:block;margin-top:12px}.toolbar input{min-width:100%}h1{font-size:25px}}
+    @media print{body{background:#fff}.wrap{max-width:none;padding:0}.toolbar,.print,.note{display:none}.table-box{border:0;box-shadow:none;border-radius:0}table{min-width:0;font-size:9px}th,td{padding:5px 6px;font-size:9px}h1{font-size:20px}.sub{font-size:10px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div><h1>名片聯絡資訊</h1><p class="sub">依名片影像整理｜共 9 筆｜可搜尋姓名、公司、電話、地址與服務項目</p></div>
+      <div class="count" id="count">顯示 9 筆</div>
+    </section>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="搜尋姓名、公司、電話、地址、服務項目…" aria-label="搜尋名片資料">
+      <select id="category" aria-label="依分類篩選"><option value="">全部分類</option></select>
+      <button class="print" type="button" onclick="window.print()">列印／另存 PDF</button>
+    </div>
+    <section class="table-box">
+      <table id="cards">
+        <thead><tr><th>編號</th><th>掃描日期</th><th>人脈分類</th><th>姓名／名稱</th><th>公司／機構</th><th>職稱</th><th>電話</th><th>行動電話</th><th>Email</th><th>地址</th><th>網站</th><th>服務項目</th><th>統一編號</th><th>備註</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="empty" id="empty">找不到符合條件的資料。</div>
+    </section>
+    <p class="note">資料來源：工作資料夾內的名片影像。空白欄位表示名片未提供；「服務項目」部分依名片上的公司業別或明示內容整理。</p>
+  </main>
+  <script>
+    const data = [
+      {id:'001',date:'2026-05-11',cat:'保險',name:'陳紀妍',company:'南山人壽保險股份有限公司／竹中通訊處',title:'業務主任',tel:'03-531-1107',mobile:'0925-158-568',email:'don789g@yahoo.com.tw',address:'30054 新竹市東大路二段 110 號 5 樓之 2',site:'www.nanshanlife.com.tw',service:'人壽保險、保險業務',tax:'11456006',note:'名片未列個人服務細項，依公司業別整理',file:'Scan20260511_183043(1).jpg'},
+      {id:'002',date:'2026-05-11',cat:'公共事業',name:'吳文忠（育丞）',company:'台灣自來水公司第二區管理處',title:'副處長',tel:'03-464-3131 分機 202',mobile:'0912-223-257',email:'h485@mail.water.gov.tw',address:'324 桃園市平鎮區水廠路 150 號',site:'',service:'自來水供應、公營事業管理',tax:'',note:'',file:'Scan20260511_183043(2).jpg'},
+      {id:'003',date:'2026-05-11',cat:'科技製造',name:'謝欣雄',company:'KoMiCo Technology Taiwan Ltd.',title:'資深廠務經理／管理部',tel:'03-597-2988 分機 123',mobile:'0933-976-646',email:'Jason.Hsieh@komico.com',address:'303 新竹縣湖口鄉實踐路 14 號',site:'www.komico.com',service:'Chamber Solution Provider；半導體設備腔體相關解決方案',tax:'28124684',note:'',file:'Scan20260511_183043(3).jpg'},
+      {id:'004',date:'2026-05-11',cat:'教育／體育',name:'龔榮堂／Kung, Jung-Tang',company:'國立體育大學',title:'體育長／Professor & Director',tel:'03-328-3201 分機 5005',mobile:'0921-336-730',email:'kung@ntsu.edu.tw',address:'333325 桃園市龜山區文化一路 250 號',site:'',service:'高等教育、體育教學與行政管理',tax:'02612744',note:'',file:'Scan20260511_183043(5).jpg'},
+      {id:'005',date:'2026-05-12',cat:'建築',name:'（待查）',company:'九福建築師事務所／Joe Fu Architecture',title:'',tel:'05-532-8108',mobile:'',email:'joefu.archi@gmail.com',address:'雲林縣斗六市成功路 569 號',site:'',service:'建築師事務、建築設計',tax:'38913272',note:'名片未顯示個人姓名',file:'Scan20260512_102051(1).jpg'},
+      {id:'006',date:'2026-05-12',cat:'建築',name:'江堅龍',company:'江堅龍建築師事務所／Architect & Associate',title:'',tel:'02-8797-3567 分機 2539',mobile:'',email:'clc25@ceci.com.tw',address:'台北市內湖區陽光街 323 號 1 樓',site:'',service:'建築設計、建築師事務',tax:'',note:'',file:'Scan20260512_102051(2).jpg'},
+      {id:'007',date:'2026-05-12',cat:'建築',name:'蔡仁毅',company:'福建金門馬祖地區建築師公會／蔡仁毅建築師事務所',title:'公會鑑定委員會主任委員／事務所負責人',tel:'公會：082-328-712；事務所：02-2345-8707',mobile:'0937-911-858',email:'jybear.tsai@msa.hinet.net',address:'公會：89350 金門縣金城鎮民權路 226 巷 4 弄 22 號 4 樓；事務所：110 台北市信義區和平東路三段 323 號 7 樓',site:'',service:'建築師公會、建築鑑定、建築設計',tax:'77355036',note:'同一張名片包含公會與個人事務所資料',file:'Scan20260512_102051(3).jpg'},
+      {id:'008',date:'2026-05-12',cat:'實業／貿易',name:'俞翰蒼',company:'詮力實業股份有限公司',title:'一級專員',tel:'02-2726-8558',mobile:'0972-061-551',email:'ji394su3@chuanli.com.tw',address:'110 台北市信義區松德路 161 號 11 樓之 1',site:'',service:'',tax:'43794487',note:'名片未明確標示服務項目；藍色手寫內容未列入正式資料',file:'Scan20260512_102051(4).jpg'},
+      {id:'009',date:'2026-05-12',cat:'房地產',name:'鄭子傑',company:'傳真機構／Virtuosi Real Estate',title:'副總經理',tel:'+886-2-2777-1288',mobile:'+886-931-393-717',email:'chengtzuchieh@gmail.com',address:'台北市市民大道四段 100 號 15 樓',site:'',service:'專業建築代銷、房地產行銷；關聯項目：廣告、建設、投資',tax:'',note:'名片下方列示：傳真實業、傳美廣告、傳捷廣告、傳陽建設、傳豐投資',file:'Scan20260512_102051(5).jpg'}
+    ];
+    const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const link = (s, type) => { if (!s) return '<span class="muted">—</span>'; if (type === 'email') return `<a href="mailto:${esc(s)}">${esc(s)}</a>`; if (type === 'site') return `<a href="https://${esc(s)}" target="_blank" rel="noreferrer">${esc(s)}</a>`; return esc(s); };
+    const tbody = document.querySelector('#cards tbody'), search = document.querySelector('#search'), category = document.querySelector('#category');
+    [...new Set(data.map(x => x.cat))].forEach(x => category.insertAdjacentHTML('beforeend', `<option value="${esc(x)}">${esc(x)}</option>`));
+    function render(){ const q=search.value.trim().toLowerCase(), c=category.value; const list=data.filter(x => (!c || x.cat===c) && (!q || Object.values(x).join(' ').toLowerCase().includes(q))); tbody.innerHTML=list.map(x=>`<tr><td>${x.id}</td><td>${x.date}</td><td><span class="tag">${esc(x.cat)}</span></td><td class="name">${esc(x.name)}</td><td>${esc(x.company)}<br><span class="muted">${esc(x.file)}</span></td><td>${esc(x.title) || '<span class="muted">—</span>'}</td><td>${esc(x.tel) || '<span class="muted">—</span>'}</td><td>${esc(x.mobile) || '<span class="muted">—</span>'}</td><td>${link(x.email,'email')}</td><td>${esc(x.address)}</td><td>${link(x.site,'site')}</td><td>${esc(x.service) || '<span class="muted">—</span>'}</td><td>${esc(x.tax) || '<span class="muted">—</span>'}</td><td>${esc(x.note) || '<span class="muted">—</span>'}</td></tr>`).join(''); document.querySelector('#count').textContent=`顯示 ${list.length} 筆`; document.querySelector('#empty').style.display=list.length?'none':'block'; }
+    search.addEventListener('input', render); category.addEventListener('change', render); render();
+  </script>
+</body>
+</html>
